@@ -755,15 +755,17 @@ end
 
 
 function solution34()
-    factof1to9=collect(1:9)
-    for i in 2:9
-        factof1to9[i]=factof1to9[i-1]*i
+    factof1to9=collect(0:9)
+    factof1to9[1]=1
+    for i in 2:10
+        factof1to9[i]=factof1to9[i-1]*(i-1)
     end
-    # say if n is the largest one such that n =sum(factorial.(digits(n))), then 
-    # we have 10*n+9 >n+9!, which is n > 8! -1
-    # thus, for all n > 8!, if we add one digits in n, say k,to make it 10*n+k,
-    # we then must have 10*n >n+9!
-    for k in 1:factof1to9[8]
-
-    
+    s=0
+    ub=sum(factof1to9)
+    for k in 10:ub
+        if k == sum(factof1to9[digits(k).+1])
+            s+=k
+        end
+    end
+    s
 end
