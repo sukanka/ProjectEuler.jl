@@ -486,7 +486,7 @@ function solution24(n=1000000)
     for p in P
         i+=1
         if i ==n
-            return collect(p)
+            return sum(collect(p) .* [10^(10-i) for i in 1:10])
         end
     end
 end
@@ -642,3 +642,54 @@ function solution34()
     end
     s
 end
+
+function solution35(n=1000_000)
+    cnt=0
+    for i in 2:n
+        if isprime(i)
+            all_prime=true
+            for num in cycles(i)
+                if !isprime(num)
+                    all_prime=false
+                    break
+                end
+            end
+            if all_prime
+                cnt+=1
+            end
+        end
+    end
+    cnt
+end
+
+
+function solution36(n=1000_000)
+    s=0
+    for i in 1:n
+        if !iseven(i)
+            tenary=string(i)
+            binary=string(i,base=2)
+            if tenary==reverse(tenary) && binary ==reverse(binary)
+                s+=i
+            end
+        end
+    end
+    s
+end
+
+function solution37()
+    s=0
+    cnt=0
+    i=11
+    while true
+        if istruncatableprime(i)
+            cnt+=1
+            s+=i
+        end
+        i+=2
+        if cnt ==11
+            return s
+        end
+    end
+end
+

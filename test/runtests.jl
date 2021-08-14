@@ -1,6 +1,6 @@
 using ProjectEuler
 using Test
-
+cd("src")
 @testset "ProjectEuler.jl" begin
     @test solution1() == 233168
     @test solution2() == 4613732
@@ -32,6 +32,13 @@ using Test
     @test solution28() == 669171001
     @test solution29() == 9183
     @test solution30() == 443839
+    @test solution31() == 73682
+    @test solution32() == 45228
+    @test solution33() == 100
+    @test solution34() == 40730
+    @test solution35() == 55
+    @test solution36() == 872187
+    @test solution37() == 748317
 end
 
 
