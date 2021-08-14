@@ -1,6 +1,7 @@
 using JET
 using BenchmarkTools
 using Combinatorics
+include("auxfun.jl")
 
 function solution1(n=1000)
     s = 0
@@ -56,32 +57,6 @@ function solution4(n=3)
 end
 
 function solution5(n=20)
-    function gcd(a::T1, b::T2) where {T1,T2 <: Integer}
-        if a > b
-            return gcd(b, a)
-        else
-            c = b % a
-            if c == 0
-                return a
-                else return gcd(a, c)
-            end
-        end
-    end
-    function gcd(a::T) where T <: AbstractArray{<:Integer,1}
-        m = a[1]
-        for i in 1:length(a)
-            m = gcd(m, a[i])
-        end
-        m
-    end          
-    lcm(a::T1, b::T2) where {T1,T2 <: Integer} = round(Int, a * b / gcd(a, b))
-    function lcm(a::T) where T <: AbstractArray{<:Integer,1}
-        m = a[1]
-        for i in 1:length(a)
-            m = lcm(m, a[i])
-    end
-    m
-    end
     lcm(1:n) 
 end
 
@@ -153,19 +128,6 @@ function solution9(n=1000)
 end
 
 function solution10(n=2000000)
-    function sieve(n)
-        is_prime=trues(n)
-            for i in 2:ceil(Int,√n)
-                if is_prime[i]
-                    for j in i^2:i:n
-                        if j %i==0
-                            is_prime[j]=false
-                        end
-                    end
-                end
-            end
-        return (x for x in 2:n if is_prime[x])
-    end
     return sum(sieve(n))
 end
 
@@ -200,26 +162,6 @@ end
 
 function solution12(n=500)
     tri_num(n)=round(Int,n*(n+1)/2)
-    function num_of_factors(n)
-        n> 1 || return 1
-        key=0 
-        val=0
-        s=1
-        k=2
-        while n!=k
-            if n %k==0
-            key=k
-            val+=1
-                n=round(Int,n/k)
-            else
-            s*=val+1
-            val=0
-                k+= k==2 ? 1 : 2
-            end
-        end
-        n==key ? val+=1 : val=1
-        s*=val+1
-    end
     i=2
     K=tri_num(i)
     N=num_of_factors(K)
@@ -523,27 +465,6 @@ function solution22()
 end
 
 function solution23()
-    function is_abundant(n)
-        n>=12 || return false
-        s=1
-        i=2
-        while i*i <=n
-            a= n%i
-            b=div(n,i)
-            if a==0 
-                if i != b
-                    s+=i+b
-                else 
-                    s+=i
-                end 
-            end
-            i+=1
-            if s > n
-                return true
-            end
-        end
-        return false
-    end
     abundants=(1:28123)[is_abundant.(1:28123)]
     function is_sum_of_two_abundant(n)
         n>=24 || return false
@@ -584,28 +505,8 @@ function solution25(dig=1000)
 end
 
 function  solution26(n=1000)
-    rems=zeros(n)
-    function cyclelen(x::Integer)
-        loc=1
-        @assert x>=1
-        r=1
-        d,r=divrem(r,x)
-        while r!=0
-            rems[loc]=r
-            r*=10
-            d,r=divrem(r,x)
-            t=findfirst(x->x==r,rems[1:loc]) #第一个相同位置
-            loc+=1 # 当前位置
-            if !isnothing(t)
-                return loc-t
-            end
-        end
-        return 0
-    end
     lens=cyclelen.(1:1000)
     findmax(lens)[2]
-   
-    
 end
 solution26()
 
@@ -624,34 +525,6 @@ function solution27(ub=1000)
         end
     end
     return a0*b0
-end
-function primecounter(f::Function)
-    x=0
-    out=f(x)
-    cnt=0
-    while isprime(out)
-        cnt+=1 
-        x+=1
-        out=f(x)
-    end
-    return cnt
-end
-function isprime(n::Integer)
-    n<= 1 && return false
-    if iseven(n) && n!=2 
-        return false
-    end
-    if n==3 
-        return true
-    end
-    i=3
-    while i*i <=n
-        if n%i ==0
-            return false
-        end
-        i+=2
-    end
-    return true
 end
 # @enter solution27()
 
